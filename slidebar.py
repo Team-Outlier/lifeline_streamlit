@@ -43,8 +43,8 @@ def sideBar():
         # Sidebar menu for page navigation
         selected = option_menu(
             menu_title="Menu",
-            options=["Home", "Predicted Spot", "Analytics"],
-            icons=["house", "eye", "bar-chart"],
+            options=["Home", "Predicted Spot", "Analytics","Suggestion Models"],
+            icons=["house", "eye", "bar-chart","eye"],
             menu_icon="cast",
             default_index=0,
         )
@@ -59,5 +59,15 @@ def sideBar():
                 default_index=0,
             )
             return df_lat_lon_filtered,selected, selected_district,selected_color_theme, analytics_option
+        
+        if selected =="Suggestion Models":
+            suggestion_models_option = option_menu(
+                menu_title="Suggestion Models",
+                options=["Suggestion Model 1", "Suggestion Model 2"],
+                icons=["chart-line","chart-pie"],
+                menu_icon="cast",
+                default_index=0,
+
+            )
 
     return df_lat_lon_filtered, selected,selected_district,selected_color_theme, None
