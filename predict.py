@@ -1,7 +1,7 @@
 import plotly.graph_objs as go
 from sklearn.cluster import KMeans
 import pandas as pd
-
+import streamlit as st
 
 def create_Scatterplot_map(df):
     # Define the center and zoom level for the map
@@ -18,8 +18,6 @@ def create_Scatterplot_map(df):
     centers_df = pd.DataFrame(centers, columns=['Latitude', 'Longitude'])
     center_marker_size = 15
     center_marker_color = 'gold'
-    global global_center
-    global_center =centers_df
 
     # Create Scattermapbox traces for each cluster center with only circle outline
     traces_centers = go.Scattermapbox(
@@ -32,7 +30,8 @@ def create_Scatterplot_map(df):
             opacity=1
         ),
         hoverinfo='text',
-        hovertext='Latitude: ' + centers_df['Latitude'].astype(str) + '<br>Longitude: ' + centers_df['Longitude'].astype(str)
+        hovertext='Latitude: ' + centers_df['Latitude'].astype(str) + '<br>Longitude: ' + centers_df['Longitude'].astype(str)+'<br> <a href="https://www.gps-coordinates.net/street-view/@' + centers_df['Latitude'].astype(str) + ',' + centers_df['Longitude'].astype(str) + ',h237,p9,z1">Open Street View</a>'
+        
     )
 
     # Create the layout for the map
@@ -51,4 +50,18 @@ def create_Scatterplot_map(df):
     # Create the figure including both original data and cluster centers
     fig = go.Figure(data=[traces_centers], layout=layout)
 
+    # Add a custom data URL to each marker
+    for idx, row in centers_df.iterrows():
+        lon = row['Longitude']
+        lat = row['Latitude']
+        url = f"https://www.gps-coordinates.net/street-view/@{lon},{lat},h237,p9,z1"
+        fig.add_annotation(
+            x=row['Longitude'],
+            y=row['Latitude'],
+            text=f'<a href="{url}" target="_blank">Open Street View</a>',
+            showarrow=False,
+            font=dict(color='white', size=10),
+        )
+
     return fig
+

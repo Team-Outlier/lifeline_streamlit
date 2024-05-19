@@ -2,6 +2,7 @@ import streamlit as st
 from slidebar import sideBar
 from pages.home_page import home_page
 import altair as alt
+
 from pages.prediction_page import progress_page
 from pages.analytics_page import analytics_page
 
