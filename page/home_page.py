@@ -3,8 +3,9 @@ import altair as alt
 import plotly.express as px
 from streamlit_folium import st_folium
 from clustermap_severity import create_cluster_map
+from map_road_type import map_road_type
 
-def home_page(df_lat_lon_filtered, selected_district):
+def home_page(df_lat_lon_filtered, selected_district,selected_color_theme):
     st.markdown('## Karnataka State Police Dashboard')
 
     with st.expander("🧭 My database"):
@@ -37,25 +38,64 @@ def home_page(df_lat_lon_filtered, selected_district):
         # Placeholder for migration difference or other relevant metrics
         st.metric(label="Migration Difference", value="N/A")
 
-    cols = st.columns((4.5, 3.5), gap='medium')
-
+    cols = st.columns((1,3.5, 3.5), gap='medium')
     with cols[0]:
-        st.markdown('#### Severity Map')
-        map_folium = create_cluster_map(df_lat_lon_filtered,selected_district)
-        st_folium(map_folium, width=700, height=500)
+        st.markdown('#### Top Districts by Accident Count')
+        df_accident_count_sorted = df_accident_count.sort_values(by='accident_count', ascending=False)
+        st.dataframe(df_accident_count_sorted,
+                     column_order=["district", "accident_count"],
+                     hide_index=True,
+                     width=None,
+                     column_config={
+                         "district": st.column_config.TextColumn("District"),
+                         "accident_count": st.column_config.ProgressColumn(
+                             "Accident Count",
+                             format="%d",
+                             min_value=0,
+                             max_value=max(df_accident_count_sorted.accident_count),
+                         )
+                     }
+                     )
+
+    with cols[1]:
+        st.markdown('#### Road Map')
+        map_folium = map_road_type(df_lat_lon_filtered)
+        # st_folium(map_folium, width=700, height=500)
+        st.plotly_chart(map_folium, use_container_width=True, height=500)
+
+        st.markdown('### Number of Accidents Per Year')
+        # Aggregate data by year
+        df_yearly_accidents = df_lat_lon_filtered.groupby('Year').size().reset_index(name='Total Accidents')
+
+        # Create the column chart using Altair
+        bar_chart = alt.Chart(df_yearly_accidents).mark_bar().encode(
+            x=alt.X('Year:O', title='Year'),
+            y=alt.Y('Total Accidents:Q', title='Number of Accidents'),
+            tooltip=['Year', 'Total Accidents']
+        ).properties(
+            title='Number of Accidents Per Year',
+            width=600,
+            height=400
+        )
+
+        st.altair_chart(bar_chart, use_container_width=True)
 
         # heatmap = make_heatmap(df_lat_lon_filtered, 'Year', 'DISTRICTNAME', 'severity', selected_color_theme)
         # st.altair_chart(heatmap, use_container_width=True)
 
-    with cols[1]:
-        st.markdown('#### Top Districts by Accident Count')
-        df_accident_count_sorted = df_accident_count.sort_values(by='accident_count', ascending=False)
-        st.dataframe(df_accident_count_sorted)
+    with cols[2]:
+        
+        st.markdown('#### Severity Map')
+        map_folium = create_cluster_map(df_lat_lon_filtered,selected_district)
+        st_folium(map_folium, width=700, height=440)
 
-        # st.markdown('#### Choropleth Map')
-        # # Adjust this line based on actual data and requirements for visualization
-        # choropleth = make_choropleth(df_lat_lon_filtered, 'DISTRICTNAME', 'severity', selected_color_theme)
-        # st.plotly_chart(choropleth, use_container_width=True)
+        
+        
+
+        st.markdown('#### Choropleth Map')
+        # Adjust this line based on actual data and requirements for visualization
+        choropleth = make_choropleth(df_lat_lon_filtered, 'DISTRICTNAME', 'severity', selected_color_theme)
+        st.plotly_chart(choropleth, use_container_width=True)
 
         with st.expander('About', expanded=True):
             st.write('''
@@ -80,14 +120,14 @@ def home_page(df_lat_lon_filtered, selected_district):
 #     )
 #     return heatmap
 
-# def make_choropleth(input_df, input_id, input_column, input_color_theme):
-#     choropleth = px.choropleth(input_df, locations=input_id, color=input_column,
-#                                color_continuous_scale=input_color_theme)
-#     choropleth.update_layout(
-#         template='plotly_dark',
-#         plot_bgcolor='rgba(0, 0, 0, 0)',
-#         paper_bgcolor='rgba(0, 0, 0, 0)',
-#         margin=dict(l=0, r=0, t=0, b=0),
-#         height=350
-#     )
-#     return choropleth
+def make_choropleth(input_df, input_id, input_column, input_color_theme):
+    choropleth = px.choropleth(input_df, locations=input_id, color=input_column,
+                               color_continuous_scale=input_color_theme)
+    choropleth.update_layout(
+        template='plotly_dark',
+        plot_bgcolor='rgba(0, 0, 0, 0)',
+        paper_bgcolor='rgba(0, 0, 0, 0)',
+        margin=dict(l=0, r=0, t=0, b=0),
+        height=350
+    )
+    return choropleth

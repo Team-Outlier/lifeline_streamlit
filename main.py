@@ -1,10 +1,10 @@
 import streamlit as st
 from slidebar import sideBar
-from home_page import home_page
+from page.home_page import home_page
 import altair as alt
 
-from prediction_page import progress_page
-from analytics_page import analytics_page
+from page.prediction_page import progress_page
+from page.analytics_page import analytics_page
 
 # Page configuration
 st.set_page_config(
@@ -21,11 +21,11 @@ with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # Main
-df_lat_lon_filtered,selected,selected_district, analytics_option = sideBar()
+df_lat_lon_filtered,selected,selected_district,selected_color_theme, analytics_option = sideBar()
 
 if selected == "Home":
     try:
-        home_page(df_lat_lon_filtered,selected_district)
+        home_page(df_lat_lon_filtered,selected_district,selected_color_theme)
     except Exception as e:
         st.warning(f"An error occurred: {e}")
 

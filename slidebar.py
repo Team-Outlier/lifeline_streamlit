@@ -20,10 +20,13 @@ def sideBar():
 
         # Year selection
         year_list = list(df_lat_lon.Year.unique())[::-1]
-        selected_year = st.selectbox('Select a year', year_list)
+        selected_year = st.selectbox('Select a year', ['All']+year_list)
         
         # Filter data by selected year
-        df_lat_lon_filtered = df_lat_lon[df_lat_lon['Year'] == selected_year]
+        if selected_year != 'All':
+            df_lat_lon_filtered = df_lat_lon[df_lat_lon['Year'] == selected_year]
+        else :
+            df_lat_lon_filtered = df_lat_lon
 
         # District selection
         district_list = list(df_lat_lon_filtered['DISTRICTNAME'].unique())
@@ -50,11 +53,11 @@ def sideBar():
         if selected == "Analytics":
             analytics_option = option_menu(
                 menu_title="Analytics",
-                options=["Analytics 1", "Analytics 2", "Analytics 3", "Analytics 4"],
-                icons=["chart-line", "chart-pie", "chart-bar", "chart-area"],
+                options=["Temporal Analysis", "Road Type Analysis", "Landmark Analysis", "Road Signage Analysis","Pedestrian Analysis"],
+                icons=["chart-line", "chart-pie", "chart-bar", "chart-area","chart-bar"],
                 menu_icon="cast",
                 default_index=0,
             )
-            return df_lat_lon_filtered,selected, selected_district, analytics_option
+            return df_lat_lon_filtered,selected, selected_district,selected_color_theme, analytics_option
 
-    return df_lat_lon_filtered, selected,selected_district, None
+    return df_lat_lon_filtered, selected,selected_district,selected_color_theme, None
