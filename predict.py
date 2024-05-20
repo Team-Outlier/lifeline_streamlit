@@ -37,6 +37,8 @@ def create_Scatterplot_map(df):
     # Create the layout for the map
     layout = go.Layout(
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
+        height=500,
+        width=1000,
         hovermode='closest',
         mapbox=dict(
             accesstoken='pk.eyJ1IjoicXM2MjcyNTI3IiwiYSI6ImNraGRuYTF1azAxZmIycWs0cDB1NmY1ZjYifQ.I1VJ3KjeM-S613FLv3mtkw',
