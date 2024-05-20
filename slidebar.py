@@ -13,6 +13,7 @@ def sideBar():
 
     with st.sidebar:
         
+        
 
         # File uploader in the sidebar
         data = st.file_uploader("Upload a Dataset", type=["csv", "xlsx", "xls"])
