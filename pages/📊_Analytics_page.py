@@ -6,8 +6,8 @@ def analytics_page_1():
     st.title("Temporal Analysis")
     st.components.v1.iframe(
         src="https://app.powerbi.com/view?r=eyJrIjoiYjU3ZDkzMTAtZDEyYy00MTFmLWJjZGItYzA0YzcxMDJhZTYxIiwidCI6IjUyMjVmOWFhLWJiZjctNDA2MS04YTdhLTI0OGM3M2MyNTRhOCJ9",
-        width=800,
-        height=500,
+        width=1200,
+        height=800,
         scrolling=True
     )
 
@@ -20,11 +20,11 @@ def analytics_page_2():
         scrolling=True
     )
     st.write("This is the content for Road Type Analysis.")
-
+#<iframe title="Landmark_Vicinity_Analysis" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiN2E2NGMxNDAtNjQ1MC00NjgwLWI4NGItZTMyMzgyOGZiYTVkIiwidCI6IjUyMjVmOWFhLWJiZjctNDA2MS04YTdhLTI0OGM3M2MyNTRhOCJ9" frameborder="0" allowFullScreen="true"></iframe>
 def analytics_page_3():
     st.title("Landmark Analysis")
     st.components.v1.iframe(
-        src="https://app.powerbi.com/view?r=eyJrIjoiM2EwNzc2MTItMDYxZS00ZmFiLTlhZTYtMTg0YmEzZWE1YjY1IiwidCI6IjUyMjVmOWFhLWJiZjctNDA2MS04YTdhLTI0OGM3M2MyNTRhOCJ9",
+        src="https://app.powerbi.com/view?r=eyJrIjoiN2E2NGMxNDAtNjQ1MC00NjgwLWI4NGItZTMyMzgyOGZiYTVkIiwidCI6IjUyMjVmOWFhLWJiZjctNDA2MS04YTdhLTI0OGM3M2MyNTRhOCJ9",
         width=1200,
         height=800,
         scrolling=True
