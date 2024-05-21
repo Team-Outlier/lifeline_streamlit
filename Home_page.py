@@ -84,15 +84,15 @@ with cols[0]:
                  }
                  )
     
-    st.markdown('##### Number of Accidents by Weather Condition ')
-    # Pivot table: Number of accidents by weather condition
-    pivot_weather = df_lat_lon_filtered.pivot_table(
-        index='Weather',
-        values='Crime_No',
+    st.markdown('##### Main Causes of Accidents by Locations ')
+    pivot_causes = df_lat_lon_filtered.pivot_table(
+        index='Accident_Location',
+        columns='Main_Cause',
+        values='DISTRICTNAME',
         aggfunc='count',
         fill_value=0
-    )
-    st.dataframe(pivot_weather)
+    ).reset_index()
+    st.dataframe(pivot_causes)
 
 with cols[1]:
     tab1, tab2 = st.tabs(["Road Map", "Cluster Map"])

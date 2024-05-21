@@ -9,7 +9,7 @@ import pandas as pd
 def sideBar():
 
     
-    df_lat_lon = pd.read_excel('data/demo.xlsx')
+    df_lat_lon = pd.read_excel('data/data_for_maps-88k.xlsx')
 
     with st.sidebar:
         
@@ -23,7 +23,7 @@ def sideBar():
             elif data.name.endswith(('.xlsx', '.xls')):
                 df_lat_lon = pd.read_excel(data)
         else:
-            df_lat_lon = pd.read_excel('data/demo.xlsx')
+            df_lat_lon = pd.read_excel('data/data_for_maps-88k.xlsx')
 
         # Year selection
         year_list = list(df_lat_lon.Year.unique())[::-1]
